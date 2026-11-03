@@ -1,11 +1,1 @@
-name = "masakin"
-compatibility_date = "2024-11-01"
-pages_build_output_dir = "./"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "masakin-db"
-database_id = "c9cbb479-e173-48eb-9485-5c6425d8c09b"
-
-[vars]
-JWT_SECRET = "masakin_super_secret_key_2025_change_me"
