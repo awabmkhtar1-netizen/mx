@@ -31,12 +31,24 @@ export async function verifyPassword(password, stored) {
 }
 
 function b64url(str) {
-  return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
+
 function b64urlDecode(str) {
   const s = str.replace(/-/g, "+").replace(/_/g, "/");
   const pad = s + "===".slice((s.length + 3) % 4);
-  return atob(pad);
+  const binary = atob(pad);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
 }
 
 export async function signJWT(payload, secret) {
