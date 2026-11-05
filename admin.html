@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة تحكم المسؤول | مساكن</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body { font-family: 'Cairo', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-8">
+
+  <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-6">
+    <h1 class="text-2xl font-bold mb-6 text-center">لوحة إضافة العقارات</h1>
+
+    <form id="addForm" class="space-y-4">
+      <!-- العنوان والوصف القصير -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-bold mb-1">عنوان العقار</label>
+          <input type="text" id="title" required class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">وصف قصير (مثال: 3 غرف في الرياض)</label>
+          <input type="text" id="short" required class="w-full border rounded-lg p-2">
+        </div>
+      </div>
+
+      <!-- الموقع والسعر -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-bold mb-1">الموقع</label>
+          <input type="text" id="location" required placeholder="الخرطوم - الرياض" class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">الحي</label>
+          <input type="text" id="district" required placeholder="الرياض" class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">السعر (جنيه)</label>
+          <input type="number" id="price" required class="w-full border rounded-lg p-2">
+        </div>
+      </div>
+
+      <!-- المواصفات -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-bold mb-1">المساحة (م²)</label>
+          <input type="number" id="area" required class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">الغرف</label>
+          <input type="number" id="rooms" required class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">الحمامات</label>
+          <input type="number" id="baths" required class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">الطابق</label>
+          <input type="number" id="floor" required class="w-full border rounded-lg p-2">
+        </div>
+      </div>
+
+      <!-- الحالة والتشطيب -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-bold mb-1">سنة البناء</label>
+          <input type="number" id="year" required class="w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">الحالة</label>
+          <select id="status" class="w-full border rounded-lg p-2">
+            <option value="متاح">متاح</option>
+            <option value="محجوز">محجوز</option>
+            <option value="مباع">مباع</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-1">التشطيب</label>
+          <input type="text" id="finishing" required placeholder="سوبر لوكس" class="w-full border rounded-lg p-2">
+        </div>
+      </div>
+
+      <!-- المصعد والجراج -->
+      <div class="flex gap-6">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="elevator" class="w-4 h-4" checked> يوجد مصعد
+        </label>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="parking" class="w-4 h-4" checked> يوجد موقف سيارات
+        </label>
+      </div>
+
+      <!-- الأوصاف -->
+      <div>
+        <label class="block text-sm font-bold mb-1">الوصف (يظهر في الكارت)</label>
+        <textarea id="description" required rows="2" class="w-full border rounded-lg p-2"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-bold mb-1">الوصف الكامل (يظهر في التفاصيل)</label>
+        <textarea id="long_description" required rows="4" class="w-full border rounded-lg p-2"></textarea>
+      </div>
+
+      <!-- الصور -->
+      <div>
+        <label class="block text-sm font-bold mb-1">روابط الصور (رابط واحد في كل سطر)</label>
+        <textarea id="images" required rows="4" placeholder="https://example.com/img1.jpg&#10;https://example.com/img2.jpg" class="w-full border rounded-lg p-2 text-left" dir="ltr"></textarea>
+      </div>
+
+      <!-- الفيديو -->
+      <div>
+        <label class="block text-sm font-bold mb-1">رابط الفيديو (اختياري - اتركه فارغاً إذا لم يوجد)</label>
+        <input type="text" id="video" class="w-full border rounded-lg p-2 text-left" dir="ltr">
+      </div>
+
+      <button type="submit" id="submitBtn" class="w-full bg-black text-white font-bold py-3 rounded-xl hover:bg-gray-800 transition">
+        حفظ العقار ونشره
+      </button>
+    </form>
+    
+    <div id="message" class="mt-4 text-center font-bold"></div>
+  </div>
+
+  <script>
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('message');
+      btn.innerText = 'جاري الحفظ...';
+      btn.disabled = true;
+      msg.innerText = '';
+
+      // تحويل الصور من نص إلى مصفوفة JSON
+      const imagesText = document.getElementById('images').value.trim();
+      const imagesArray = imagesText.split('\n').map(url => url.trim()).filter(url => url !== '');
+      const imagesJSON = JSON.stringify(imagesArray);
+
+      const data = {
+        title: document.getElementById('title').value,
+        short: document.getElementById('short').value,
+        location: document.getElementById('location').value,
+        district: document.getElementById('district').value,
+        price: parseInt(document.getElementById('price').value),
+        area: parseInt(document.getElementById('area').value),
+        rooms: parseInt(document.getElementById('rooms').value),
+        baths: parseInt(document.getElementById('baths').value),
+        floor: parseInt(document.getElementById('floor').value),
+        year: parseInt(document.getElementById('year').value),
+        status: document.getElementById('status').value,
+        finishing: document.getElementById('finishing').value,
+        elevator: document.getElementById('elevator').checked ? 1 : 0,
+        parking: document.getElementById('parking').checked ? 1 : 0,
+        description: document.getElementById('description').value,
+        long_description: document.getElementById('long_description').value,
+        images: imagesJSON,
+        video: document.getElementById('video').value
+      };
+
+      try {
+        const res = await fetch('/api/admin-add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          msg.className = 'mt-4 text-center font-bold text-green-600';
+          msg.innerText = 'تم حفظ العقار بنجاح! سيظهر في الموقع الآن.';
+          document.getElementById('addForm').reset();
+        } else {
+          throw new Error(result.error || 'حدث خطأ');
+        }
+      } catch (error) {
+        msg.className = 'mt-4 text-center font-bold text-red-600';
+        msg.innerText = 'خطأ: ' + error.message;
+      } finally {
+        btn.innerText = 'حفظ العقار ونشره';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
