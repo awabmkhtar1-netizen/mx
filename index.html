@@ -358,13 +358,14 @@ const TOTAL = apartments.length;
 
       /* ---------- الهيرو ---------- */
       const heroFirst = (apartments && apartments.length > 0) ? apartments[0] : {
-  title: "منصة مساكن العقارية",
-  short: "شقق فاخرة",
-  price: 0,
-  images: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80"],
-  location: "الخرطوم",
-  district: "الرياض"
-};
+        title: "منصة مساكن العقارية",
+        short: "شقق فاخرة",
+        price: 0,
+        images: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80"],
+        location: "الخرطوم",
+        district: "الرياض"
+      };
+
       const hero = h("section", { id: "home", className: "relative overflow-hidden" },
         h("div", { className: "mx-auto max-w-[1280px] px-4 md:px-6 pt-8 md:pt-12 pb-6 grid md:grid-cols-[1.1fr_0.9fr] gap-6" }, [
           h("div", { key: "text", className: "relative" }, [
@@ -373,11 +374,11 @@ const TOTAL = apartments.length;
               " متاح الآن للحجز والمعاينة"
             ]),
             h("h1", { key: "h1", className: "mt-4 text-[38px] md:text-[56px] font-extrabold leading-[0.95] tracking-tight" }, [
-              TOTAL + " شقة فاخرة",
-              h("span", { key: "s", className: "block font-light text-black/40" }, "بانتظارك في قلب الخرطوم")
+              "منصة مساكن العقارية",
+              h("span", { key: "s", className: "block font-light text-black/40" }, "أفضل الشقق الفاخرة في الخرطوم")
             ]),
             h("p", { key: "p", className: "mt-4 text-[15px] leading-7 text-black/60 max-w-[52ch]" },
-              "تشطيبات سوبر لوكس، مواقع راقية في المنشية والرياض والمعمورة، أسعار شفافة، وتجربة حجز فاخرة تشبه Property Finder و Bayut. اختر شقتك وشوف التفاصيل كاملة."
+              "تشطيبات سوبر لوكس، مواقع راقية في المنشية والرياض والمعمورة، أسعار شفافة، وتجربة حجز فاخرة. اختر شقتك وشوف التفاصيل كاملة."
             ),
             h("div", { key: "stats", className: "mt-6 grid grid-cols-3 gap-3 max-w-[440px]" }, [
               { k: String(TOTAL), v: "شقة جاهزة" },
@@ -399,7 +400,7 @@ const TOTAL = apartments.length;
             h("div", { key: "wrap", className: "relative aspect-[4/3] md:aspect-[4/3.2] rounded-[28px] overflow-hidden bg-white border border-black/5 shadow-[0_20px_60px_rgba(0,0,0,0.12)]" }, [
               h("img", {
                 key: "i",
-                src: heroFirst.images[0],
+                src: heroFirst.images && heroFirst.images.length > 0 ? heroFirst.images[0] : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
                 alt: heroFirst.title,
                 className: "absolute inset-0 w-full h-full object-cover",
                 onError: handleImgError
@@ -407,10 +408,16 @@ const TOTAL = apartments.length;
               h("div", { key: "grad", className: "absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" }),
               h("div", { key: "bottom", className: "absolute bottom-3 left-3 right-3 flex gap-2" }, [
                 h("div", { key: "card", className: "flex-1 rounded-2xl bg-white/90 backdrop-blur p-3 flex items-center gap-3" }, [
-                  h("img", { key: "th", src: heroFirst.images[0], className: "h-10 w-10 rounded-xl object-cover", alt: "", onError: handleImgError }),
+                  h("img", { 
+                    key: "th", 
+                    src: heroFirst.images && heroFirst.images.length > 0 ? heroFirst.images[0] : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80", 
+                    className: "h-10 w-10 rounded-xl object-cover", 
+                    alt: "", 
+                    onError: handleImgError 
+                  }),
                   h("div", { key: "t", className: "leading-tight" }, [
-                    h("div", { key: "a", className: "text-[12px] font-bold" }, heroFirst.short),
-                    h("div", { key: "b", className: "text-[11px] text-black/50" }, formatPrice(heroFirst.price))
+                    h("div", { key: "a", className: "text-[12px] font-bold" }, heroFirst.short || "شقة فاخرة"),
+                    h("div", { key: "b", className: "text-[11px] text-black/50" }, formatPrice(heroFirst.price || 0))
                   ]),
                   h("div", { key: "tag", className: "mr-auto h-6 px-2 rounded-full bg-emerald-500 text-white text-[10px] font-bold grid place-items-center" }, "متاح")
                 ]),
@@ -431,7 +438,6 @@ const TOTAL = apartments.length;
           ])
         ])
       );
-
       /* ---------- الفلتر ---------- */
       const filterBar = h("section", { id: "apartments", className: "mx-auto max-w-[1280px] px-4 md:px-6 mt-10" }, [
         h("div", { key: "bar", className: "rounded-[22px] bg-white border border-black/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-3 md:p-4 flex flex-col lg:flex-row gap-3 lg:items-center" }, [
