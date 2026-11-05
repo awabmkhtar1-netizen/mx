@@ -20,92 +20,9 @@
     /* ============================================================
        🟢 الداتا — استبدل هذا القسم فقط ببيانات العميل
        ============================================================ */
-    const APARTMENTS = [
-      {
-        id: 1,
-        title: "شقة فاخرة في الرياض بإطلالة مميزة",
-        short: "3 غرف في الرياض",
-        location: "الخرطوم - الرياض",
-        district: "الرياض",
-        price: 350000,
-        area: 120,
-        rooms: 3,
-        baths: 2,
-        floor: 2,
-        year: 2021,
-        status: "متاح",
-        finishing: "سوبر لوكس",
-        elevator: true,
-        parking: true,
-        description: "شقة مشرقة بتصميم عصري، تشطيب راقي، تهوية ممتازة وإضاءة طبيعية طول اليوم.",
-        longDesc: "شقة مشرقة بتصميم عصري، تشطيب راقي، تهوية ممتازة وإضاءة طبيعية طول اليوم. قريبة من الخدمات والمدارس والأسواق. تتكون من 3 غرف نوم و2 حمامات وصالة كبيرة ومطبخ مفتوح على الطراز الأمريكي. العمارة مؤمنة بكاميرات مراقبة وبواب 24 ساعة.",
-        images: [
-          "https://picsum.photos/seed/apt1-1/800/600",
-          "https://picsum.photos/seed/apt1-2/800/600",
-          "https://picsum.photos/seed/apt1-3/800/600",
-          "https://picsum.photos/seed/apt1-4/800/600",
-          "https://picsum.photos/seed/apt1-5/800/600"
-        ],
-        video: ""
-      },
-      {
-        id: 2,
-        title: "شقة عصرية 3 غرف بتشطيب سوبر لوكس",
-        short: "3 غرف في المنشية",
-        location: "الخرطوم - المنشية",
-        district: "المنشية",
-        price: 420000,
-        area: 140,
-        rooms: 3,
-        baths: 2,
-        floor: 4,
-        year: 2022,
-        status: "متاح",
-        finishing: "الترا لوكس",
-        elevator: true,
-        parking: true,
-        description: "موقع مميز جداً، هدوء وأمان، سكان راقين. الشقة جاهزة للسكن مباشرة، مطبخ راكب، وشبابيك ألمنيوم عازل.",
-        longDesc: "موقع مميز جداً، هدوء وأمان، سكان راقين. الشقة جاهزة للسكن مباشرة، مطبخ راكب، وشبابيك ألمنيوم عازل. الطابق الرابع، مساحتها 140 م²، 3 غرف نوم، 2 حمامات، صالة كبيرة وبلكونة بإطلالة مفتوحة.",
-        images: [
-          "https://picsum.photos/seed/apt2-1/800/600",
-          "https://picsum.photos/seed/apt2-2/800/600",
-          "https://picsum.photos/seed/apt2-3/800/600",
-          "https://picsum.photos/seed/apt2-4/800/600",
-          "https://picsum.photos/seed/apt2-5/800/600"
-        ],
-        video: ""
-      },
-      {
-        id: 3,
-        title: "بنتهاوس راقي بإطلالة نيلية",
-        short: "5 غرف في المعمورة",
-        location: "الخرطوم - المعمورة",
-        district: "المعمورة",
-        price: 780000,
-        area: 220,
-        rooms: 5,
-        baths: 3,
-        floor: 6,
-        year: 2023,
-        status: "محجوز",
-        finishing: "مفروشة بالكامل",
-        elevator: true,
-        parking: true,
-        description: "فرصة لا تعوض لمحبي الفخامة، صالة كبيرة مع بلكونة واسعة، غرف نوم بحمامات خاصة، وتشطيب يخليك تحس إنك في فندق.",
-        longDesc: "فرصة لا تعوض لمحبي الفخامة، صالة كبيرة مع بلكونة واسعة، غرف نوم بحمامات خاصة، وتشطيب يخليك تحس إنك في فندق. الطابق السادس (بنتهاوس)، مساحته 220 م²، 5 غرف نوم، 3 حمامات، مطبخ مفتوح، وغرفة خادمة.",
-        images: [
-          "https://picsum.photos/seed/apt3-1/800/600",
-          "https://picsum.photos/seed/apt3-2/800/600",
-          "https://picsum.photos/seed/apt3-3/800/600",
-          "https://picsum.photos/seed/apt3-4/800/600",
-          "https://picsum.photos/seed/apt3-5/800/600"
-        ],
-        video: ""
-      }
-    ];
+    const APARTMENTS = [];
 
-    const DISTRICTS = Array.from(new Set(APARTMENTS.map(function (a) { return a.district; })));
-    const TOTAL = APARTMENTS.length;
+  
     const PRICE_FMT = new Intl.NumberFormat("ar-SD");
     const FALLBACK_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23f3f0eb'/%3E%3Crect x='120' y='120' width='560' height='360' rx='24' fill='white' stroke='%23e5ddd3'/%3E%3Ccircle cx='260' cy='260' r='48' fill='%23f1c453'/%3E%3Crect x='340' y='220' width='200' height='16' rx='8' fill='%23ddd'/%3E%3Crect x='340' y='250' width='140' height='12' rx='6' fill='%23e8e2db'/%3E%3Crect x='160' y='340' width='480' height='10' rx='5' fill='%23f0ece6'/%3E%3Crect x='160' y='365' width='360' height='10' rx='5' fill='%23f0ece6'/%3E%3C/svg%3E";
 
@@ -199,7 +116,7 @@
       const [selected, setSelected] = useState(null);
       const [imgIdx, setImgIdx] = useState(0);
       const [loading, setLoading] = useState(true);
-
+const [apartments, setApartments] = useState([]);
       // ✅ حالة المستخدم والمفضلة والواجهة
       const [user, setUser] = useState(null);
       const [favorites, setFavorites] = useState(new Set());
@@ -227,10 +144,23 @@
           .catch(function () {});
       }, [user]);
 
-      useEffect(function () {
-        const t = setTimeout(function () { setLoading(false); }, 900);
-        return function () { clearTimeout(t); };
-      }, []);
+useEffect(function () {
+  fetch("/api/properties")
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+       const formatted = data.map(function(p) {
+         return Object.assign({}, p, {
+           images: p.images ? JSON.parse(p.images) : [],
+           elevator: p.elevator === 1,
+           parking: p.parking === 1,
+           longDesc: p.long_description
+         });
+       });
+       setApartments(formatted);
+       setLoading(false);
+    })
+    .catch(function() { setLoading(false); });
+}, []);
 
       useEffect(function () {
         if (selected) setImgIdx(0);
@@ -296,8 +226,8 @@
         setView("home");
       }
 
-      const filtered = useMemo(function () {
-        return APARTMENTS.filter(function (a) {
+  const filtered = useMemo(function () {
+  return apartments.filter(function (a) {
           if (status !== "الكل" && a.status !== status) return false;
           if (rooms !== "الكل" && String(a.rooms) !== rooms) return false;
           if (district !== "الكل" && a.district !== district) return false;
@@ -326,7 +256,8 @@
         setDistrict("الكل");
         setPrice("الكل");
       }
-
+const DISTRICTS = Array.from(new Set(apartments.map(function (a) { return a.district; })));
+const TOTAL = apartments.length;
       /* ---------- كارت عقار (قابل لإعادة الاستخدام) ---------- */
       function renderPropertyCard(p) {
         const isFav = favorites.has(String(p.id));
@@ -426,7 +357,7 @@
       );
 
       /* ---------- الهيرو ---------- */
-      const heroFirst = APARTMENTS[0];
+      const heroFirst = apartments[0] || {};
       const hero = h("section", { id: "home", className: "relative overflow-hidden" },
         h("div", { className: "mx-auto max-w-[1280px] px-4 md:px-6 pt-8 md:pt-12 pb-6 grid md:grid-cols-[1.1fr_0.9fr] gap-6" }, [
           h("div", { key: "text", className: "relative" }, [
