@@ -357,7 +357,14 @@ const TOTAL = apartments.length;
       );
 
       /* ---------- الهيرو ---------- */
-      const heroFirst = apartments[0] || {};
+      const heroFirst = (apartments && apartments.length > 0) ? apartments[0] : {
+  title: "منصة مساكن العقارية",
+  short: "شقق فاخرة",
+  price: 0,
+  images: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80"],
+  location: "الخرطوم",
+  district: "الرياض"
+};
       const hero = h("section", { id: "home", className: "relative overflow-hidden" },
         h("div", { className: "mx-auto max-w-[1280px] px-4 md:px-6 pt-8 md:pt-12 pb-6 grid md:grid-cols-[1.1fr_0.9fr] gap-6" }, [
           h("div", { key: "text", className: "relative" }, [
