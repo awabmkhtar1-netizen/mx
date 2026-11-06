@@ -571,8 +571,8 @@ const TOTAL = apartments.length;
               "منصة عقارية سودانية عصرية لعرض الشقق الفاخرة في الخرطوم. نوفر معلومات شفافة، صور حقيقية، جولات فيديو، وخدمة حجز معاينة فورية."
             ),
             h("div", { key: "btns", className: "mt-4 flex gap-2" }, [
-              h("a", { key: "wa", className: "h-9 px-4 rounded-full bg-black text-white text-[12px] font-bold grid place-items-center", href: "https://wa.me/249900000000", target: "_blank", rel: "noopener noreferrer" }, "واتساب"),
-              h("a", { key: "tel", className: "h-9 px-4 rounded-full border border-black/10 bg-white text-[12px] font-bold grid place-items-center", href: "tel:+249900000000" }, "اتصال: 0900 000 000")
+              h("a", { key: "wa", className: "h-9 px-4 rounded-full bg-black text-white text-[12px] font-bold grid place-items-center", href: "https://wa.me/249923401573", target: "_blank", rel: "noopener noreferrer" }, "واتساب"),
+              h("a", { key: "tel", className: "h-9 px-4 rounded-full border border-black/10 bg-white text-[12px] font-bold grid place-items-center", href: "tel:+249923401573" }, "اتصال: 0900 000 000")
             ])
           ]),
           h("div", { key: "links", className: "text-[13px]" }, [
@@ -726,15 +726,14 @@ const TOTAL = apartments.length;
                 ]);
               })),
               h("div", { key: "acts", className: "mt-4 grid grid-cols-3 gap-2" }, [
-                h("a", {
+                               h("a", {
                   key: "wa",
-                  href: "https://wa.me/249900000000?text=" + encodeURIComponent("مرحبا، مهتم بالشقة #" + selected.id + " - " + selected.title),
+                  href: "https://wa.me/" + (selected.contact_phone ? "249" + selected.contact_phone.replace(/^0/, '') : "249923401573") + "?text=" + encodeURIComponent("مرحبا، مهتم بالشقة #" + selected.id + " - " + selected.title),
                   target: "_blank",
                   rel: "noopener noreferrer",
                   className: "h-11 rounded-full bg-[#25D366] text-white font-bold text-[13px] grid place-items-center"
                 }, "واتساب"),
-                h("a", { key: "tel", href: "tel:+249900000000", className: "h-11 rounded-full bg-black text-white font-bold text-[13px] grid place-items-center" }, "اتصال"),
-                h("button", {
+                h("a", { key: "tel", href: "tel:" + (selected.contact_phone || "0923401573"), className: "h-11 rounded-full bg-black text-white font-bold text-[13px] grid place-items-center" }, "اتصال"),
                   key: "book",
                   onClick: function () { alert("تم طلب معاينة للشقة #" + selected.id + " — سنتواصل معك قريباً"); },
                   className: "h-11 rounded-full border border-black/10 bg-white font-bold text-[13px]"
