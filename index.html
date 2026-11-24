@@ -145,24 +145,27 @@ const [apartments, setApartments] = useState([]);
           .then(function (ids) { setFavorites(new Set((ids || []).map(String))); })
           .catch(function () {});
       }, [user]);
-
-useEffect(function () {
-  fetch("/api/properties")
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-       const formatted = data.map(function(p) {
-         return Object.assign({}, p, {
-           images: p.images ? JSON.parse(p.images) : [],
-           elevator: p.elevator === 1,
-           parking: p.parking === 1,
-           longDesc: p.long_description
-         });
-       });
-       setApartments(formatted);
-       setLoading(false);
-    })
-    .catch(function() { setLoading(false); });
-}, []);
+      useEffect(function () {
+        setLoading(true);
+        fetch("/api/properties?page=" + currentPage + "&limit=12")
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+             if (data.data) {
+               const formatted = data.data.map(function(p) {
+                 return Object.assign({}, p, {
+                   images: p.images ? JSON.parse(p.images) : [],
+                   elevator: p.elevator === 1,
+                   parking: p.parking === 1,
+                   longDesc: p.long_description
+                 });
+               });
+               setApartments(formatted);
+               setTotalPages(data.pagination.totalPages || 1);
+             }
+             setLoading(false);
+          })
+          .catch(function() { setLoading(false); });
+      }, [currentPage]);
 
       useEffect(function () {
         if (selected) setImgIdx(0);
@@ -469,7 +472,7 @@ const TOTAL = apartments.length;
           h("div", { key: "count", className: "text-[13px] text-black/60" },
             h("span", { className: "inline-flex items-center gap-2" }, [
               h("span", { key: "d", className: "h-2 w-2 rounded-full bg-black" }),
-              " عرض " + filtered.length + " من " + TOTAL + " شقة"
+             " عرض " + filtered.length + " شقة في هذه الصفحة"
             ])
           ),
           h("div", { key: "hint", className: "text-[12px] text-black/40 hidden md:block" }, "الفلترة شغالة فورياً بـ JavaScript بدون تحديث الصفحة")
@@ -494,6 +497,20 @@ const TOTAL = apartments.length;
           h("div", { key: "b", className: "text-[13px] text-black/50 mt-1" }, "جرب تغير الفلاتر أو امسح البحث"),
           h("button", { key: "c", onClick: resetAll, className: "mt-4 h-10 px-5 rounded-full bg-black text-white text-[13px] font-bold" }, "مسح الفلاتر")
         ]) : null
+                ,(!loading && totalPages > 1) ? h("div", { key: "pagination", className: "mt-10 flex justify-center items-center gap-4" }, [
+          h("button", {
+            onClick: function() { if (currentPage > 1) { setCurrentPage(currentPage - 1); window.scrollTo(0, 400); } },
+            disabled: currentPage === 1,
+            className: "h-10 px-6 rounded-full border border-black/10 bg-white font-bold text-[13px] disabled:opacity-30 hover:bg-black hover:text-white transition"
+          }, "السابق"),
+          h("span", { className: "text-[14px] font-bold" }, "صفحة " + currentPage + " من " + totalPages),
+          h("button", {
+            onClick: function() { if (currentPage < totalPages) { setCurrentPage(currentPage + 1); window.scrollTo(0, 400); } },
+            disabled: currentPage === totalPages,
+            className: "h-10 px-6 rounded-full border border-black/10 bg-white font-bold text-[13px] disabled:opacity-30 hover:bg-black hover:text-white transition"
+          }, "التالي")
+        ]) : null
+        
       ]);
 
       /* ---------- صفحة المفضلة ---------- */
