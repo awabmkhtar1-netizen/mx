@@ -116,6 +116,8 @@
       const [selected, setSelected] = useState(null);
       const [imgIdx, setImgIdx] = useState(0);
       const [loading, setLoading] = useState(true);
+            const [currentPage, setCurrentPage] = useState(1);
+      const [totalPages, setTotalPages] = useState(1);
 const [apartments, setApartments] = useState([]);
       // ✅ حالة المستخدم والمفضلة والواجهة
       const [user, setUser] = useState(null);
