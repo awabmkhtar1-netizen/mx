@@ -7,14 +7,32 @@ export async function onRequestGet({ request, env }) {
     const limit = parseInt(url.searchParams.get("limit")) || 12;
     const offset = (page - 1) * limit;
 
-    // 1. جلب العدد الإجمالي للشقق
-    const countResult = await env.DB.prepare("SELECT COUNT(*) as total FROM properties").first();
+    // قراءة فلاتر السعر من الرابط
+    const minPrice = url.searchParams.get("minPrice");
+    const maxPrice = url.searchParams.get("maxPrice");
+
+    let whereClause = "WHERE 1=1";
+    let bindings = [];
+
+    if (minPrice && minPrice !== "") {
+      whereClause += " AND price >= ?";
+      bindings.push(parseInt(minPrice));
+    }
+    if (maxPrice && maxPrice !== "") {
+      whereClause += " AND price <= ?";
+      bindings.push(parseInt(maxPrice));
+    }
+
+    // 1. جلب العدد الإجمالي للشقق المطابقة للفلتر
+    const countResult = await env.DB.prepare(
+      `SELECT COUNT(*) as total FROM properties ${whereClause}`
+    ).bind(...bindings).first();
     const total = countResult.total;
 
-    // 2. جلب الشقق الخاصة بالصفحة الحالية فقط (12 شقة)
+    // 2. جلب الشقق الخاصة بالصفحة الحالية (مع الفلترة)
     const { results } = await env.DB.prepare(
-      "SELECT * FROM properties ORDER BY created_at DESC LIMIT ? OFFSET ?"
-    ).bind(limit, offset).all();
+      `SELECT * FROM properties ${whereClause} ORDER BY created_at DESC LIMIT ? OFFSET ?`
+    ).bind(...bindings, limit, offset).all();
 
     return json({
       data: results,
@@ -22,7 +40,7 @@ export async function onRequestGet({ request, env }) {
         total: total,
         page: page,
         limit: limit,
-        totalPages: Math.ceil(total / limit) // حساب عدد الصفحات
+        totalPages: Math.ceil(total / limit)
       }
     });
   } catch (e) {
