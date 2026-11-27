@@ -130,6 +130,8 @@
       const [imgIdx, setImgIdx] = useState(0);
       const [loading, setLoading] = useState(true);
             const [currentPage, setCurrentPage] = useState(1);
+                const [minPrice, setMinPrice] = useState("");
+      const [maxPrice, setMaxPrice] = useState("");
       const [totalPages, setTotalPages] = useState(1);
 const [apartments, setApartments] = useState([]);
       // ✅ حالة المستخدم والمفضلة والواجهة
@@ -160,7 +162,11 @@ const [apartments, setApartments] = useState([]);
       }, [user]);
       useEffect(function () {
         setLoading(true);
-        fetch("/api/properties?page=" + currentPage + "&limit=12")
+               let fetchUrl = "/api/properties?page=" + currentPage + "&limit=12";
+        if (minPrice) fetchUrl += "&minPrice=" + minPrice;
+        if (maxPrice) fetchUrl += "&maxPrice=" + maxPrice;
+        
+        fetch(fetchUrl)
           .then(function(res) { return res.json(); })
           .then(function(data) {
              if (data.data) {
@@ -476,8 +482,25 @@ const TOTAL = apartments.length;
               ROOMS_OPTIONS.map(function (o) { return h("option", { key: o, value: o }, o === "الكل" ? "كل الغرف" : o + " غرف"); })),
             h("select", { key: "di", value: district, onChange: function (e) { setDistrict(e.target.value); }, "aria-label": "الموقع", className: "h-11 rounded-full bg-[#f6f5f3] border border-black/5 px-4 text-[13px] font-medium outline-none" },
               [h("option", { key: "all", value: "الكل" }, "كل المواقع")].concat(DISTRICTS.map(function (d) { return h("option", { key: d, value: d }, d); }))),
-            h("select", { key: "pr", value: price, onChange: function (e) { setPrice(e.target.value); }, "aria-label": "السعر", className: "h-11 rounded-full bg-[#f6f5f3] border border-black/5 px-4 text-[13px] font-medium outline-none md:hidden" },
-              PRICE_OPTIONS.map(function (o) { return h("option", { key: o, value: o }, o); })),
+                       h("div", { key: "prices", className: "flex items-center gap-1 bg-[#f6f5f3] rounded-full px-3 border border-black/5" }, [
+              h("input", { 
+                type: "number", 
+                placeholder: "من (مثال: 500000)", 
+                value: minPrice, 
+                onChange: function(e){ setMinPrice(e.target.value); setCurrentPage(1); }, 
+                className: "w-28 h-11 bg-transparent outline-none text-[13px] font-medium text-center", 
+                dir: "ltr" 
+              }),
+              h("span", { className: "text-black/30" }, "-"),
+              h("input", { 
+                type: "number", 
+                placeholder: "إلى (مثال: 15000000)", 
+                value: maxPrice, 
+                onChange: function(e){ setMaxPrice(e.target.value); setCurrentPage(1); }, 
+                className: "w-28 h-11 bg-transparent outline-none text-[13px] font-medium text-center", 
+                dir: "ltr" 
+              })
+            ]),
             h("button", { key: "reset", onClick: resetAll, className: "h-11 px-4 rounded-full border border-black/10 bg-white text-[13px] font-bold hover:bg-black hover:text-white transition" }, "إعادة تعيين")
           ])
         ]),
