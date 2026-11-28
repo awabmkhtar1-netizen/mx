@@ -270,12 +270,15 @@ const [apartments, setApartments] = useState([]);
 
       const favoriteProperties = favPropertiesData; // ضيفنا apartments هنا عشان يتحدث لما البيانات تحمل
 
-      function resetAll() {
+            function resetAll() {
         setSearch("");
         setStatus("الكل");
         setRooms("الكل");
         setDistrict("الكل");
-        setPrice("الكل");
+        setMinPrice("");
+        setMaxPrice("");
+        setCurrentPage(1);
+      }
       }
 const DISTRICTS = Array.from(new Set(apartments.map(function (a) { return a.district; })));
 const TOTAL = apartments.length;
@@ -631,7 +634,7 @@ const TOTAL = apartments.length;
             h("div", { key: "h", className: "font-bold mb-3" }, "روابط سريعة"),
             h("ul", { key: "u", className: "space-y-2 text-black/60" }, [
               h("li", { key: "1" }, "الرئيسية"),
-              h("li", { key: "2" }, "الشقق المتاحة (" + APARTMENTS.filter(function (a) { return a.status === "متاح"; }).length + ")"),
+                            h("li", { key: "2" }, "الشقق المتاحة (" + apartments.filter(function (a) { return a.status === "متاح"; }).length + ")"),
               h("li", { key: "3" }, "المفضلة"),
               h("li", { key: "4" }, "سياسة الخصوصية")
             ])
@@ -809,7 +812,7 @@ const TOTAL = apartments.length;
             h("div", { key: "similar", className: "rounded-[22px] bg-[#111] text-white p-4" }, [
               h("div", { key: "h", className: "text-[12px] text-white/50 font-bold" }, "شقق مشابهة"),
               h("div", { key: "list", className: "mt-3 grid gap-3" },
-                APARTMENTS.filter(function (p) { return p.id !== selected.id && p.district === selected.district; }).slice(0, 3).map(function (p) {
+                                apartments.filter(function (p) { return p.id !== selected.id && p.district === selected.district; }).slice(0, 3).map(function (p) {
                   return h("button", {
                     key: p.id,
                     onClick: function () { setSelected(p); },
