@@ -255,24 +255,7 @@ const [apartments, setApartments] = useState([]);
         setView("home");
       }
 
-  const filtered = useMemo(function () {
-  return apartments.filter(function (a) {
-          if (status !== "الكل" && a.status !== status) return false;
-          if (rooms !== "الكل" && String(a.rooms) !== rooms) return false;
-          if (district !== "الكل" && a.district !== district) return false;
-          if (price !== "الكل") {
-            if (price === "أقل من 300 ألف" && a.price >= 300000) return false;
-            if (price === "300 - 500 ألف" && (a.price < 300000 || a.price > 500000)) return false;
-            if (price === "أكثر من 500 ألف" && a.price <= 500000) return false;
-          }
-          if (search) {
-            const q = search.toLowerCase();
-            const hay = (a.title + " " + a.short + " " + a.location + " " + a.district + " " + a.description).toLowerCase();
-            return hay.indexOf(q) !== -1;
-          }
-          return true;
-        });
-      }, [search, status, rooms, district, price]);
+        const filtered = apartments; // السيرفر هو اللي بيفلتر دلوقتي
 
       const favoriteProperties = useMemo(function () {
         return APARTMENTS.filter(function (p) { return favorites.has(String(p.id)); });
