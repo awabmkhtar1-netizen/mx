@@ -162,10 +162,15 @@ const [apartments, setApartments] = useState([]);
       }, [user]);
       useEffect(function () {
         setLoading(true);
-               let fetchUrl = "/api/properties?page=" + currentPage + "&limit=12";
-        if (minPrice) fetchUrl += "&minPrice=" + minPrice;
-        if (maxPrice) fetchUrl += "&maxPrice=" + maxPrice;
+        let fetchUrl = `/api/properties?page=${currentPage}&limit=12`;
         
+        if (minPrice) fetchUrl += `&minPrice=${minPrice}`;
+        if (maxPrice) fetchUrl += `&maxPrice=${maxPrice}`;
+        if (search) fetchUrl += `&search=${encodeURIComponent(search)}`;
+        if (district !== "الكل") fetchUrl += `&district=${encodeURIComponent(district)}`;
+        if (rooms !== "الكل") fetchUrl += `&rooms=${rooms}`;
+        if (status !== "الكل") fetchUrl += `&status=${encodeURIComponent(status)}`;
+
         fetch(fetchUrl)
           .then(function(res) { return res.json(); })
           .then(function(data) {
@@ -184,7 +189,7 @@ const [apartments, setApartments] = useState([]);
              setLoading(false);
           })
           .catch(function() { setLoading(false); });
-      }, [currentPage]);
+      }, [currentPage, minPrice, maxPrice, search, district, rooms, status]); // <-- ضفنا كل الفلاتر هنا
 
       useEffect(function () {
         if (selected) setImgIdx(0);
