@@ -257,10 +257,18 @@ const [apartments, setApartments] = useState([]);
 
         const filtered = apartments; // السيرفر هو اللي بيفلتر دلوقتي
 
-           const favoriteProperties = useMemo(function () {
-        // بنفلتر من apartments اللي جوه الدالة (المحمّلة من السيرفر)
-        return apartments.filter(function (p) { return favorites.has(String(p.id)); });
-      }, [favorites, apartments]); // ضيفنا apartments هنا عشان يتحدث لما البيانات تحمل
+                 const [favPropertiesData, setFavPropertiesData] = useState([]);
+
+      useEffect(function () {
+        if (user && view === "favorites") {
+          fetch("/api/favorites/properties", { credentials: "include" })
+            .then(function(r) { return r.ok ? r.json() : []; })
+            .then(function(data) { setFavPropertiesData(data || []); })
+            .catch(function() {});
+        }
+      }, [user, view]);
+
+      const favoriteProperties = favPropertiesData; // ضيفنا apartments هنا عشان يتحدث لما البيانات تحمل
 
       function resetAll() {
         setSearch("");
